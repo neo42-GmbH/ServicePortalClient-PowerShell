@@ -39,7 +39,7 @@ param(
     # Specifies the Enpointmanager Site Code
     $SiteCode,
     [string]
-    # Specifies the Enpointmanager Site Code
+    # Specifies the Configuration Manager Installation Path
     $ConfigmanagerPath = "C:\Program Files (x86)\Microsoft Configuration Manager\"
   
 )
@@ -47,7 +47,7 @@ param(
 Import-Module $ConfigmanagerPath'AdminConsole\bin\ConfigurationManager.psd1'
 Set-Location $SiteCode":"
 
-Set-CMApplication -ModelName $ModelName -NewName "ToTest_$AppName"
+Set-CMApplication -ModelName $ModelName -NewName "$TargetPrefix$AppName"
 if ($?) {
     Write-Output "$Appname Rename to $TargetPrefix$AppName"
     Start-Sleep 5
