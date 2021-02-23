@@ -53,7 +53,7 @@ $favPackages = Get-SpcFavorites -Session $spcSession
 $favPackages
 
 # Add the packages to your cart
-$favPackages | Add-SpcCartItem -Session $spcSession
+$favPackages | ForEach-Object { Add-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service }
 
 # Start the download and deploy if possible
 Write-Output "Download:"

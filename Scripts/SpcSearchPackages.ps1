@@ -59,10 +59,10 @@ if($spcSession -eq $null)
 Clear-SpcCartItem -Session $spcSession
 
 # Search for latest version of a package and set as cart item
-Search-SpcPackages -Session $spcSession -Product "7-Zip" | Add-SpcCartItem -Session $spcSession -SkipList
+Search-SpcPackages -Session $spcSession -Product "7-Zip" | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
 
 # Search for latest version of a tool and set as cart item
-Search-SpcPackages -Session $spcSession -Product "Service Portal Client" -Service Tool | Add-SpcCartItem -Session $spcSession -SkipList
+Search-SpcPackages -Session $spcSession -Product "Service Portal Client" -Service Tool | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
 
 Get-SpcCartItem -Session $spcSession
 

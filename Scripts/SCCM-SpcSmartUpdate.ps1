@@ -53,7 +53,7 @@ $suPackages = Get-SpcSmartUpdate -Session $spcSession -DeploymentSystem SCCM -Sh
 $suPackages
 
 # Add the packages to your cart
-$suPackages | Add-SpcCartItem -Session $spcSession
+$suPackages | Add-SpcCartItem -Session $spcSession -DeploymentSystem SCCM
 
 # Start the download and deploy if possible
 Start-SpcDownload -Session $spcSession -DeployMode Deploy -DirectorySubtree $true

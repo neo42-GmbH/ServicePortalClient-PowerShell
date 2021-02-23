@@ -2,11 +2,11 @@
 
 $Host.UI.RawUI.BackgroundColor = 'White'
 $Host.UI.RawUI.ForegroundColor = 'Black' 
-cls
+Clear-Host
 
 Write-Output "####################################################################"
 Write-Output "#                       neo42 SPC Cmdlet Demo                      #"
-Write-Output "#                            Version 3.0                           #"
+Write-Output "#                            Version 3.3                           #"
 Write-Output "#                   Copyright(C) 2020 neo42 GmbH                   #"
 Write-Output "#                        Visit www.neo42.de                        #"
 Write-Output "####################################################################"
@@ -32,6 +32,21 @@ Write-Output ""
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
 
+# Read credentials from windows credential manager
+$spcCredentials = Get-SpcCredentials -ErrorAction Stop
+Write-Output "Your email is $($spcCredentials.UserName)" -ErrorAction Stop
+
+# Connect to the portal and create a session object
+$spcSession = $null
+$spcSession = Open-SpcConnection -Credentials $spcCredentials
+
+# Validate session
+if($null -eq $spcSession)
+{
+	Write-Output "Failed to create Service Portal Session"
+	Exit -1
+}
+
 # Provide the folder path where the packages are stored
 $scriptPath = "$env:USERPROFILE\Downloads\neo42 Services"
 
@@ -56,7 +71,7 @@ foreach($script in $scriptfiles)
 		Write-Output ""
 		Write-Output ".. Try to add $script .."
 		# Add the package to the import list
-		$result = Add-SpcPackageImport -Path  $($script.FullName)
+		$result = Add-SpcPackageImport -Session $spcSession -Path  $($script.FullName) -DeploymentSystem Empirum
 
 		# Validate the result
 		if([int]$result -eq -1)
@@ -76,14 +91,14 @@ foreach($script in $scriptfiles)
 # Display the list 
 Write-Output ""
 Write-Output "Get Package import list"
-Get-SpcPackageImport
+Get-SpcPackageImport -Session $spcSession
 
 # Remove the first script from list
 if( $firstScript -ne "" )
 {
 	Write-Output ""
 	Write-Output "Try to Remove $firstScript"
-	$result = Remove-SpcPackageImport -Path  $firstScript
+	$result = Remove-SpcPackageImport -Session $spcSession -Path  $firstScript -DeploymentSystem Empirum
 
 	# Validate the result
 	if([int]$result -ne 0)
@@ -94,15 +109,15 @@ if( $firstScript -ne "" )
 
 	# Display the modified list
 	Write-Output "$firstScript removed:"
-	Get-SpcPackageImport
+	Get-SpcPackageImport -Session $spcSession
 }
 
 # Clear the list if you don't like the result
-#Clear-SpcPackageImport
+#Clear-SpcPackageImport -Session $spcSession
 
 # Start the import process for all packages in the list
 Write-Output ""
 Write-Output "Try to import .."
-Start-SpcPackageImport | % { $_.ToString() }
+Start-SpcPackageImport -Session $spcSession | % { $_.ToString() }
 
 #endregion

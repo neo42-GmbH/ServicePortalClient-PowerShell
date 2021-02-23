@@ -52,11 +52,11 @@ if( $blackItem -ne $null )
 	
 	Write-Output ""
 	Write-Output "BlackList without last item:"
-	Remove-SpcSmartUpdateBlackList -PackageID $blackItem.PackageID -Session $spcSession
+	Remove-SpcSmartUpdateBlackList -PackageID $blackItem.PackageID -Session $spcSession -DeploymentSystem $blackItem.Service
 
 	Write-Output ""
 	Write-Output "BlackList with last item:"
-	Add-SpcSmartUpdateBlackList -PackageID $blackItem.PackageID -Session $spcSession
+	Add-SpcSmartUpdateBlackList -PackageID $blackItem.PackageID -Session $spcSession -DeploymentSystem $blackItem.Service
 }
 else
 {
@@ -67,11 +67,11 @@ else
 	Write-Output ""
 	Write-Output "BlackList with '$developer':"
 	$tmpList = Search-SpcPackages -Session $spcSession -Developer $developer
-	$tmpList | Add-SpcSmartUpdateBlackList -Session $spcSession
+	$tmpList | ForEach-Object { Add-SpcSmartUpdateBlackList -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service } 
 
 	Write-Output ""
 	Write-Output "BlackList without '$developer':"
-	$tmpList | Remove-SpcSmartUpdateBlackList -Session $spcSession
+	$tmpList | ForEach-Object { Remove-SpcSmartUpdateBlackList -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service }
 }
 
 # Close the connection

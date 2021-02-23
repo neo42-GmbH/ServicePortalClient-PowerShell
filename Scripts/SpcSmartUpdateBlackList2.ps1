@@ -49,7 +49,7 @@ Write-Output "Favorites:"
 $favPackages
 
 # Add the packages to your cart
-$favPackages | Add-SpcCartItem -Session $spcSession
+$favPackages | ForEach-Object { Add-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service }
 Write-Output ""
 Write-Output "Cart content:"
 Get-SpcCartItem  -Session $spcSession
@@ -60,7 +60,7 @@ Write-Output "BlackList:"
 $blackList
 
 # Remove the packages from the Black-List
-$blackList | Remove-SpcCartItem -Session $spcSession
+$blackList | ForEach-Object { Remove-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service }
 Write-Output ""
 Write-Output "Current Cart content witout Black-List:"
 Get-SpcCartItem  -Session $spcSession

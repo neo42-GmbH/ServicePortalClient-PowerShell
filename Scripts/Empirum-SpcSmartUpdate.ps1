@@ -60,7 +60,7 @@ if($suPackages -eq $null)
 $suPackages
 
 # Add the packages to your cart
-$suPackages | Add-SpcCartItem -Session $spcSession
+$suPackages | Add-SpcCartItem -Session $spcSession -DeploymentSystem Empirum
 
 # Start the download and deploy if possible
 Start-SpcDownload -Session $spcSession -DeployMode Deploy -DirectorySubtree $true
