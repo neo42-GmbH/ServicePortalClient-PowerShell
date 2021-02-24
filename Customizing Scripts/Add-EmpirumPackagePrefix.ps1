@@ -46,8 +46,6 @@ param
 $targetSwQuery = "SELECT [SoftwareID],[SoftwareName] FROM [Software] where Type = 'App' AND PackageName = '{TARGETPACKAGENAME}'"
 $updatePackageStatement = "UPDATE [Software] SET [SoftwareName] = '{SOFTWARENAME}' WHERE [SoftwareId] = '{SOFTWAREID}'"
 
-Invoke-Sqlcmd -Query "Select * FROM clients" -ConnectionString "$ConnectionString"
-
 $dbPackage = Invoke-Sqlcmd -Query $targetSwQuery.Replace("{TARGETPACKAGENAME}", $PackageName) -ConnectionString "$ConnectionString"
 if($dbPackage -eq $null)
 {
