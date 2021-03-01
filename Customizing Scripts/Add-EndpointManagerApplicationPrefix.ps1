@@ -3,7 +3,7 @@
 .SYNOPSIS
     Adds a prefix to the name of an existing package in Microsoft Endpoint Manager.
 .DESCRIPTION
-    Searches an existing Empirum package by the 'Modelname' and adds the given prefix to the name.
+    Searches an existing SCCM package by the 'Modelname' and adds the given prefix to the name.
     The main purpose of this script is to demonstrate the use of the 'Customizing Scripts' feature in the neo42 Service Portal Client.
 
     Target deployment system: SCCM
