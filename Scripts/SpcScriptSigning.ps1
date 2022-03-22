@@ -31,7 +31,7 @@ $spcSession = $null
 $spcSession = Open-SpcConnection -Credentials $spcCredentials
 
 # Configure the script signing feature
-Set-SpcScriptSigningSettings -Session $spcSession -CertificatePath "C:\Temp\certificate.pfx" -CertificatePassword "password" -TimeStampServerUrl "http://timestamp.globalsign.com"
+Set-SpcScriptSigningSettings -Session $spcSession -CertificatePath "C:\Temp\certificate.pfx" -CertificatePassword "password" -TimeStampServerUrl "http://timestamp.digicert.com"
 
 # Get the script signing settings to check if the settings are already set
 # Get-SpcScriptSigningSettings -Session $spcSession
