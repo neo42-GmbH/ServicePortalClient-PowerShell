@@ -16,7 +16,7 @@
     Purpose/Change: Updated Header, renamed to Empirum Specific
   
 .EXAMPLE
-    .\SpcEmpirumInplaceUpgradeWizard.ps1
+    .\SpcInplaceUpgradeWizard.ps1
 #>
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
