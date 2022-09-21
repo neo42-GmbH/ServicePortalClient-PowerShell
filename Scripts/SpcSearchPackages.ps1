@@ -1,32 +1,30 @@
-#region Header
+#requires -version 5
+<#
+.SYNOPSIS
+    Imports Deployment System Settings
+.DESCRIPTION
+    This demo script will show you how to search for packages in the neo42 Service Portal
+ 	Found packages can be downloaded and deployed automatically
+	
+	!!! ATTENTION !!!
+	This script will automatically download and deploy all found favorite packages (only latest versions)
+ 	Handle with care!
+	!!! ATTENTION !!!
 
-$Host.UI.RawUI.BackgroundColor = 'White'
-$Host.UI.RawUI.ForegroundColor = 'Black' 
-cls
-
-Write-Output "####################################################################"
-Write-Output "#                       neo42 SPC Cmdlet Demo                      #"
-Write-Output "#                            Version 3.0                           #"
-Write-Output "#                   Copyright(C) 2020 neo42 GmbH                   #"
-Write-Output "#                        Visit www.neo42.de                        #"
-Write-Output "####################################################################"
-Write-Output ""
-
-#endregion
-
-# Description
-# This demo script will show you how to search for packages in the neo42 Service Portal
-# Found packages can downloaded and deployed automatically
-#
-# !!!! ATTENTION !!!
-#
-# This script will automatically download and deploy all found favorite packages (only latest versions)
-# Handle with care!
-#
-# !!!! ATTENTION !!!
-
-#region Demo
-
+.INPUTS
+    none
+.OUTPUTS
+    none
+.NOTES
+    Version:        1.2
+    Author:         neo42 GmbH
+    Creation Date:  21.09.2022
+    Purpose/Change: Updated header and Deploymentsystem parameter for Tools
+    Requirements:   neo42 Service Portal Client Version 3.7.x
+  
+.EXAMPLE
+    .\SpcSearchPackages.ps1
+#>
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
 
@@ -38,7 +36,7 @@ Write-Output "Your email is $($spcCredentials.UserName)" -ErrorAction Stop
 $spcSession = Open-SpcConnection -Credentials $spcCredentials
 
 # Validate session
-if($spcSession -eq $null)
+if($null -eq $spcSession)
 {
 	Write-Output "Failed to create Service Portal Session"
 	Exit -1
@@ -76,5 +74,3 @@ Start-SpcDownload -Session $spcSession -DeployMode Deploy -DirectorySubtree $tru
 
 # Close the connection
 Close-SpcConnection
-
-#endregion

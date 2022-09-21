@@ -1,33 +1,31 @@
-#region Header
+#requires -version 5
+<#
+.SYNOPSIS
+    Imports Deployment System Settings
+.DESCRIPTION
+	This demo script will show you how to download and deploy the packages from your 
+	favorite list. It is required to setup the connection to the Deployment System 
+	inside the Service Portal Client GUI
+	
+	!!! ATTENTION !!!
+	This script will automatically download and extract all found favorite packages (only latest versions)
+ 	Handle with care!
+	!!! ATTENTION !!!
 
-$Host.UI.RawUI.BackgroundColor = 'White'
-$Host.UI.RawUI.ForegroundColor = 'Black' 
-cls
-
-Write-Output "####################################################################"
-Write-Output "#                       neo42 SPC Cmdlet Demo                      #"
-Write-Output "#                            Version 3.0                           #"
-Write-Output "#                   Copyright(C) 2020 neo42 GmbH                   #"
-Write-Output "#                        Visit www.neo42.de                        #"
-Write-Output "####################################################################"
-Write-Output ""
-
-#endregion
-
-# Description
-# This demo script will show you how to download and deploy the packages from your 
-# favorite list. It is required to setup the connection to the Deployment System 
-# inside the Service Portal Client GUI
-#
-# !!!! ATTENTION !!!
-#
-# This script will automatically download and deploy all found favorite packages (only latest versions)
-# Handle with care!
-#
-# !!!! ATTENTION !!!
-
-#region Demo
-
+.INPUTS
+    none
+.OUTPUTS
+    none
+.NOTES
+    Version:        1.2
+    Author:         neo42 GmbH
+    Creation Date:  21.09.2022
+    Purpose/Change: Updated Header and improved formatted list output
+    Requirements:   neo42 Service Portal Client Version 3.7.x
+  
+.EXAMPLE
+    .\SpcFavorites.ps1
+#>
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
 
@@ -40,7 +38,7 @@ $spcSession = $null
 $spcSession = Open-SpcConnection -Credentials $spcCredentials
 
 # Validate session
-if($spcSession -eq $null)
+if($null -eq $spcSession)
 {
 	Write-Output "Failed to create Service Portal Session"
 	Exit -1
@@ -53,7 +51,8 @@ $favPackages = Get-SpcFavorites -Session $spcSession
 $favPackages
 
 # Add the packages to your cart
-$favPackages | ForEach-Object { Add-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service }
+$favPackages | ForEach-Object { Add-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service -SkipList }
+Get-SpcCartItem -Session $spcSession | Select-Object PackageID,ReleaseDate,Developer,Product,Version,Service | Format-Table
 
 # Start the download and deploy if possible
 Write-Output "Download:"
@@ -65,11 +64,9 @@ Write-Output "Download:"
 $downloadBase = "$env:USERPROFILE\Downloads\_SPC"
 $result = Start-SpcDownload -Session $spcSession -DeployMode Extract -Verbose -DownloadDestinationPath "$downloadBase\Download" -ExtractDestinationPath "$downloadBase\Extract" -DirectorySubtree $true
 
-$result | % { $_.ToString() }
+$result | ForEach-Object { $_.ToString() }
 
 Write-Output ""
 
 # Close the connection
 Close-SpcConnection
-
-#endregion
