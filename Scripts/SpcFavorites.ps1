@@ -50,6 +50,9 @@ $favPackages = Get-SpcFavorites -Session $spcSession
 # Display the list
 $favPackages
 
+# clear existing cart Items
+Clear-SpcCartItem -Session $spcSession
+
 # Add the packages to your cart
 $favPackages | ForEach-Object { Add-SpcCartItem -Session $spcSession -PackageID $_.PackageID -DeploymentSystem $_.Service -SkipList }
 Get-SpcCartItem -Session $spcSession | Select-Object PackageID,ReleaseDate,Developer,Product,Version,Service | Format-Table
