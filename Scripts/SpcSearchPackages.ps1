@@ -62,7 +62,12 @@ Clear-SpcCartItem -Session $spcSession
 Search-SpcPackages -Session $spcSession -Product "7-Zip" | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
 
 # Search for latest version of a tool and set as cart item
-Search-SpcPackages -Session $spcSession -Product "Service Portal Client" -Service Tool | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
+$SearchProduct = "neo42 Service Portal Client"
+Search-SpcPackages -Session $spcSession -Product $SearchProduct -Service Tool | Where-Object {
+	$_.Product -like "*$SearchProduct*"
+} | ForEach-Object { 
+	Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem Download
+}
 
 Get-SpcCartItem -Session $spcSession
 
