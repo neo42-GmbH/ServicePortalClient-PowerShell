@@ -27,6 +27,7 @@
 #>
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
+$deploymentSystem = "<deploymentsystem>"
 
 # Read credentials from windows credential manager
 $spcCredentials = Get-SpcCredentials -ErrorAction Stop
@@ -57,7 +58,7 @@ if($null -eq $spcSession)
 Clear-SpcCartItem -Session $spcSession
 
 # Search for latest version of a package and set as cart item
-Search-SpcPackages -Session $spcSession -Product "7-Zip" | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
+Search-SpcPackages -Session $spcSession -Product "7-Zip" -Service $deploymentSystem | ForEach-Object { Add-SpcCartItem -Session $spcSession -SkipList -PackageID $_.PackageID -DeploymentSystem $_.Service }
 
 # Search for latest version of a tool and set as cart item
 $SearchProduct = "neo42 Service Portal Client"

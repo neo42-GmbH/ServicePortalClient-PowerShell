@@ -28,6 +28,7 @@
 #>
 # Import the SPC module
 Import-Module Neo42.Spc.PsModule
+$deploymentSystem = "<deploymentsystem>"
 
 # Read credentials from windows credential manager
 $spcCredentials = Get-SpcCredentials -ErrorAction Stop
@@ -45,7 +46,7 @@ if($null -eq $spcSession)
 }
 
 # Get the list of packages (latest versions) found in your favorite list
-$favPackages = Get-SpcFavorites -Session $spcSession
+$favPackages = Get-SpcFavorites -Session $spcSession |Where-Object Service -eq $deploymentSystem
 
 # Display the list
 $favPackages
